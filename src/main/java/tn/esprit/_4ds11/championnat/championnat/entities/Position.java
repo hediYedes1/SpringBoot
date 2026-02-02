@@ -1,11 +1,9 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "position")
 public class Position {
 
     @Id
@@ -14,6 +12,12 @@ public class Position {
 
     private Integer classement;
     private Integer nbPoints;
+
+    @ManyToOne
+    private Course course;
+
+    @ManyToOne
+    private Pilote pilote;
 
     // Constructeurs
     public Position() {}
@@ -46,5 +50,21 @@ public class Position {
 
     public void setNbPoints(Integer nbPoints) {
         this.nbPoints = nbPoints;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Pilote getPilote() {
+        return pilote;
+    }
+
+    public void setPilote(Pilote pilote) {
+        this.pilote = pilote;
     }
 }

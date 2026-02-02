@@ -1,11 +1,10 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "sponsor")
 public class Sponsor {
 
     @Id
@@ -16,6 +15,9 @@ public class Sponsor {
     private String pays;
     private Float budgetAnnuel;
     private Boolean bloquerContrat;
+
+    @OneToMany(mappedBy = "sponsor", cascade = CascadeType.ALL)
+    private List<Contrat> contrats;
 
     // Constructeurs
     public Sponsor() {}
@@ -66,5 +68,13 @@ public class Sponsor {
 
     public void setBloquerContrat(Boolean bloquerContrat) {
         this.bloquerContrat = bloquerContrat;
+    }
+
+    public List<Contrat> getContrats() {
+        return contrats;
+    }
+
+    public void setContrats(List<Contrat> contrats) {
+        this.contrats = contrats;
     }
 }

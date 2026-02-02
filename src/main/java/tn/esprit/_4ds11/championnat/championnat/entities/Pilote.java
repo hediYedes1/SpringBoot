@@ -1,11 +1,10 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "pilote")
 public class Pilote {
 
     @Id
@@ -15,6 +14,12 @@ public class Pilote {
     private String libelleP;
     private Integer nbPointsTotal;
     private Integer classementGeneral;
+
+    @OneToMany(mappedBy = "pilote", cascade = CascadeType.ALL)
+    private List<Position> positions;
+
+    @ManyToOne
+    private Equipe equipe;
 
     // Constructeurs
     public Pilote() {}
@@ -58,6 +63,19 @@ public class Pilote {
         this.classementGeneral = classementGeneral;
     }
 
+    public List<Position> getPositions() {
+        return positions;
+    }
 
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
+    }
 
+    public Equipe getEquipe() {
+        return equipe;
+    }
+
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
+    }
 }

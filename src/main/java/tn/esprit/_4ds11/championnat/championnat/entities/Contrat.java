@@ -1,11 +1,9 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "contrat")
 public class Contrat {
 
     @Id
@@ -15,6 +13,12 @@ public class Contrat {
     private Float montant;
     private String annee;
     private Boolean archived;
+
+    @ManyToOne
+    private Equipe equipe;
+
+    @ManyToOne
+    private Sponsor sponsor;
 
     // Constructeurs
     public Contrat() {}
@@ -56,5 +60,21 @@ public class Contrat {
 
     public void setArchived(Boolean archived) {
         this.archived = archived;
+    }
+
+    public Equipe getEquipe() {
+        return equipe;
+    }
+
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
+    }
+
+    public Sponsor getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(Sponsor sponsor) {
+        this.sponsor = sponsor;
     }
 }

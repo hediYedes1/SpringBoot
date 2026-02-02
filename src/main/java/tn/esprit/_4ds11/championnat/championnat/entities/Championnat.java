@@ -1,13 +1,10 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "championnat")
 public class Championnat {
 
     @Id
@@ -20,8 +17,15 @@ public class Championnat {
     private String libellec; // Note: nom étrange, probablement "libelle"
     private Integer annee; // Note: corrigé de "onnee" à "annee"
 
+    @OneToOne
+    private DetailChampionnat detailChampionnat;
+
+    @ManyToMany
+    private List<Course> courses;
+
     // Constructeurs
-    public Championnat() {}
+    public Championnat() {
+    }
 
     public Championnat(Categorie categorie, String libellec, Integer annee) {
         this.categorie = categorie;
@@ -30,6 +34,7 @@ public class Championnat {
     }
 
     // Getters et Setters
+
     public Long getIdChampionnat() {
         return idChampionnat;
     }
@@ -60,5 +65,21 @@ public class Championnat {
 
     public void setAnnee(Integer annee) {
         this.annee = annee;
+    }
+
+    public DetailChampionnat getDetailChampionnat() {
+        return detailChampionnat;
+    }
+
+    public void setDetailChampionnat(DetailChampionnat detailChampionnat) {
+        this.detailChampionnat = detailChampionnat;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }
