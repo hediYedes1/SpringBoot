@@ -15,7 +15,7 @@ public class Sponsor {
     private String pays;
     private Float budgetAnnuel;
     private Boolean bloquerContrat;
-
+    private boolean archived;
     @OneToMany(mappedBy = "sponsor", cascade = CascadeType.ALL)
     private List<Contrat> contrats;
 
@@ -76,5 +76,13 @@ public class Sponsor {
 
     public void setContrats(List<Contrat> contrats) {
         this.contrats = contrats;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 }
