@@ -1,12 +1,16 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "equipe")
-public class Equipe {
+public class Equipe implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEquipe;
@@ -16,9 +20,11 @@ public class Equipe {
     private Integer classementGeneral;
 
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Pilote> pilotes;
 
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Contrat> contrats;
 
     // Constructeurs

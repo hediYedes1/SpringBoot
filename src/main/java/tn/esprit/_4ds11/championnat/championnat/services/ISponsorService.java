@@ -1,5 +1,6 @@
 package tn.esprit._4ds11.championnat.championnat.services;
 
+import tn.esprit._4ds11.championnat.championnat.entities.Equipe;
 import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface ISponsorService {
     Sponsor recupererSponsor(Long idSponsor);
 
     Boolean archiverSponsor(Long idSponsor);
+
+    Sponsor addSponsorEtContratAssocie(Sponsor s);
 }

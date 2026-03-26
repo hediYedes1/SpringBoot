@@ -1,10 +1,15 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "position")
-public class Position {
+public class Position implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,9 +19,11 @@ public class Position {
     private Integer nbPoints;
 
     @ManyToOne
+    @JsonIgnore
     private Course course;
 
     @ManyToOne
+    @JsonIgnore
     private Pilote pilote;
 
     // Constructeurs

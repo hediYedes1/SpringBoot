@@ -2,7 +2,9 @@ package tn.esprit._4ds11.championnat.championnat.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.esprit._4ds11.championnat.championnat.entities.Equipe;
 import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
+import tn.esprit._4ds11.championnat.championnat.repository.contratRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.sponsorRepository;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class sponsorService implements ISponsorService{
 
 private final sponsorRepository sr;
+private final contratRepository cr;
     @Override
     public Sponsor ajouterSponsor(Sponsor sponsor) {
         return sr.save(sponsor);
@@ -55,6 +58,18 @@ private final sponsorRepository sr;
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Sponsor addSponsorEtContratAssocie(Sponsor s)
+    {
+        Sponsor sponsor = sr.save(s);
+        sponsor.getContrats().forEach(contrat ->
+        {
+            contrat.setSponsor(sponsor);
+            cr.save(contrat);
+        });
+        return sponsor;
     }
     }
 

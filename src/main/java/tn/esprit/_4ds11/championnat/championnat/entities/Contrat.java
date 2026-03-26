@@ -1,11 +1,15 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "contrat")
-public class Contrat {
+public class Contrat implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContrat;
@@ -15,9 +19,11 @@ public class Contrat {
     private Boolean archived;
 
     @ManyToOne
+    @JsonIgnore
     private Equipe equipe;
 
     @ManyToOne
+    @JsonIgnore
     private Sponsor sponsor;
 
     // Constructeurs
