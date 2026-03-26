@@ -30,4 +30,12 @@ public class championnatController {
                                                                @PathVariable Long idChampionnat) {
         return championnatService.affecterDetailChampionnatToChampionnat(dt, idChampionnat);
     }
+
+    @Operation(description = "affecter un championnat a une course")
+    @PutMapping("/affecterChampionnatToCourse/{idChampionnat}/{idCourse}")
+    @ResponseBody
+    public void affecterChampionnatToCourse(@PathVariable("idChampionnat") Long idChampionnat,
+                                            @PathVariable("idCourse") Long idCourse) {
+        championnatService.affecterChampionnatToCourse(idChampionnat, idCourse);
+    }
 }

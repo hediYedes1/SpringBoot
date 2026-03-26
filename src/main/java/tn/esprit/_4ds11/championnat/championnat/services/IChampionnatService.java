@@ -6,4 +6,5 @@ import tn.esprit._4ds11.championnat.championnat.entities.DetailChampionnat;
 public interface IChampionnatService {
     Championnat ajouterChampionnat(Championnat championnat);
     Championnat affecterDetailChampionnatToChampionnat(DetailChampionnat dt, Long idChampionnat);
+    void affecterChampionnatToCourse(Long idChampionnat, Long idCourse);
 }
