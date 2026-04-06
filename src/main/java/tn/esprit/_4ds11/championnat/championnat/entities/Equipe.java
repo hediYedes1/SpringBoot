@@ -24,7 +24,7 @@ public class Equipe implements Serializable {
     private List<Pilote> pilotes;
 
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
-    @JsonIgnore
+
     private List<Contrat> contrats;
 
     // Constructeurs

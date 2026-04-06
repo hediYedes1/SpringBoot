@@ -6,4 +6,5 @@ public interface IEquipeService {
     Equipe ajouterEquipe(Equipe equipe);
     Equipe addEquipeEtContratAssocie(Equipe e);
     Equipe addEquipeEtPiloteAssocie(Equipe e);
+    void archiverContratsExpireesEtAffichageContratsActifsParEquipe();
 }

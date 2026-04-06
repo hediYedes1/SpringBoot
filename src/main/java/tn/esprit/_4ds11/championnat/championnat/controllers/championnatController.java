@@ -23,6 +23,9 @@ public class championnatController {
         return championnatService.ajouterChampionnat(championnat);
     }
 
+
+
+
     @Operation(description = "affecter un detail a un championnat")
     @PutMapping("/affecterDetailschampionnatToChampionnat/{idChampionnat}")
     @ResponseBody

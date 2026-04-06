@@ -6,4 +6,5 @@ public interface IPiloteService {
 
     Pilote ajouterPilote(Pilote pilote);
     Pilote addPiloteEtPositionAssocie(Pilote p);
+    void mettreAJourPointsEtClassementPilotesFinAnnee();
 }
