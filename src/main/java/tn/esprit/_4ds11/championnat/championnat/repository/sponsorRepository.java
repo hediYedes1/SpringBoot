@@ -5,5 +5,4 @@ import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
 
 public interface sponsorRepository extends JpaRepository <Sponsor, Long> {
 
-
 }

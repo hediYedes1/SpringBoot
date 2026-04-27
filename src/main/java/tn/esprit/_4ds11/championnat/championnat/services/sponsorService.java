@@ -19,8 +19,8 @@ import java.util.Optional;
 @Slf4j
 public class sponsorService implements ISponsorService{
 
-private final sponsorRepository sr;
-private final contratRepository cr;
+    private final sponsorRepository sr;
+    private final contratRepository cr;
     @Override
     public Sponsor ajouterSponsor(Sponsor sponsor) {
         return sr.save(sponsor);
@@ -29,7 +29,7 @@ private final contratRepository cr;
     @Override
     public List<Sponsor> ajouterSponsors(List<Sponsor> sponsors) {
 
-       return sr.saveAll(sponsors);
+        return sr.saveAll(sponsors);
     }
 
     @Override
@@ -132,4 +132,3 @@ private final contratRepository cr;
         }
     }
 }
-

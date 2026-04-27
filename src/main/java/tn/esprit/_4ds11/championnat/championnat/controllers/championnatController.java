@@ -30,7 +30,7 @@ public class championnatController {
     @PutMapping("/affecterDetailschampionnatToChampionnat/{idChampionnat}")
     @ResponseBody
     public Championnat affecterDetailChampionnatToChampionnat(@RequestBody DetailChampionnat dt,
-                                                               @PathVariable Long idChampionnat) {
+                                                              @PathVariable Long idChampionnat) {
         return championnatService.affecterDetailChampionnatToChampionnat(dt, idChampionnat);
     }
 
