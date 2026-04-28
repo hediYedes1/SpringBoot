@@ -6,10 +6,12 @@ import tn.esprit._4ds11.championnat.championnat.entities.Championnat;
 import tn.esprit._4ds11.championnat.championnat.entities.Course;
 import tn.esprit._4ds11.championnat.championnat.entities.DetailChampionnat;
 import tn.esprit._4ds11.championnat.championnat.repository.championnatRepository;
+import tn.esprit._4ds11.championnat.championnat.repository.contratRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.courseRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.detailChampionnatRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -19,6 +21,7 @@ public class championnatService implements IChampionnatService {
     private final championnatRepository cr;
     private final detailChampionnatRepository dcr;
     private final courseRepository cor;
+    private final contratRepository contratRepo ;
 
     @Override
     public Championnat ajouterChampionnat(Championnat championnat) {
@@ -56,5 +59,18 @@ public class championnatService implements IChampionnatService {
 
         championnat.setCourses(coursesMisesAjour);
         cr.save(championnat);
+    }
+
+    // ChampionnatService.java
+    public HashMap<String, Float> historiqueContratsEquipe(String libelleEquipe) {
+        List<Object[]> results = contratRepo.findHistoriqueContratsByEquipe(libelleEquipe);
+
+        HashMap<String, Float> historique = new HashMap<>();
+        for (Object[] row : results) {
+            String annee   = (String) row[0];
+            Float  montant = ((Number) row[1]).floatValue();
+            historique.put(annee, montant);
+        }
+        return historique;
     }
 }

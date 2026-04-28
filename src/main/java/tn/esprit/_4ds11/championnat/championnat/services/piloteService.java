@@ -15,6 +15,7 @@ import tn.esprit._4ds11.championnat.championnat.repository.championnatRepository
 import tn.esprit._4ds11.championnat.championnat.repository.piloteRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.positionRepository;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
 
@@ -27,6 +28,7 @@ public class piloteService implements IPiloteService{
     private final piloteRepository pr;
     private final positionRepository posr;
     private final championnatRepository championnatRepo;
+    private final positionRepository  posrRepo;
     @Value("${app.scheduler.categorie-cible:FORMULA1}")
     private Categorie categorieCible;
 
@@ -126,5 +128,14 @@ public class piloteService implements IPiloteService{
 
         pr.saveAll(pilotes);
         log.info("Mise a jour annuelle terminee pour la categorie {} (annee {})", categorieCible, currentYear);
+    }
+
+    public Float moyennePositionsEntreDeuxDate(
+            LocalDate startDate, LocalDate endDate, String libelleP) {
+
+        Float moyenne = posrRepo
+                .avgClassementByPiloteAndDateBetween(libelleP, startDate, endDate);
+
+        return moyenne != null ? moyenne : 0f;
     }
 }

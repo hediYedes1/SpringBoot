@@ -7,4 +7,5 @@ public interface IEquipeService {
     Equipe addEquipeEtContratAssocie(Equipe e);
     Equipe addEquipeEtPiloteAssocie(Equipe e);
     void archiverContratsExpireesEtAffichageContratsActifsParEquipe();
+    Integer nbPointsParPilotesUneEquipeChampionnatPourUneAnne(Long idEquipe, Long idChampionnat, String annee);
 }

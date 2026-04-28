@@ -10,6 +10,7 @@ import tn.esprit._4ds11.championnat.championnat.entities.Equipe;
 import tn.esprit._4ds11.championnat.championnat.repository.contratRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.equipeRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.piloteRepository;
+import tn.esprit._4ds11.championnat.championnat.repository.positionRepository;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class equipeService implements IEquipeService {
     private final equipeRepository er;
     private final contratRepository cr;
     private final piloteRepository pr;
+    private final positionRepository po;
 
     @Override
     public Equipe ajouterEquipe(Equipe equipe) {
@@ -93,5 +95,18 @@ public class equipeService implements IEquipeService {
         } catch (NumberFormatException e) {
             return -1;
         }
+    }
+
+    public Integer nbPointsParPilotesUneEquipeChampionnatPourUneAnne(
+            Long idEquipe, Long idChampionnat, String annee) {
+        int parsedAnnee = parseYear(annee);
+        if (parsedAnnee == -1) {
+            return 0;
+        }
+
+        Integer total = po
+                .sumPointsPilotesByEquipeAndChampionnatAndAnnee(idEquipe, idChampionnat, parsedAnnee);
+
+        return total != null ? total : 0;
     }
 }
