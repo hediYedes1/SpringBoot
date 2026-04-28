@@ -1,6 +1,7 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class Pilote implements Serializable {
     private Integer classementGeneral;
 
     @OneToMany(mappedBy = "pilote", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Position> positions;
 
     @ManyToOne

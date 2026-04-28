@@ -6,17 +6,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tn.esprit._4ds11.championnat.championnat.dto.PiloteDto;
 import tn.esprit._4ds11.championnat.championnat.entities.Categorie;
+import tn.esprit._4ds11.championnat.championnat.entities.Championnat;
 import tn.esprit._4ds11.championnat.championnat.entities.Pilote;
 import tn.esprit._4ds11.championnat.championnat.entities.Position;
+import tn.esprit._4ds11.championnat.championnat.repository.championnatRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.piloteRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.positionRepository;
 
 import java.time.Year;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +26,48 @@ public class piloteService implements IPiloteService{
 
     private final piloteRepository pr;
     private final positionRepository posr;
+    private final championnatRepository championnatRepo;
     @Value("${app.scheduler.categorie-cible:FORMULA1}")
     private Categorie categorieCible;
+
+    public PiloteDto getPiloteDTO(Long id) {
+        Pilote pilote = pr.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pilote non trouve"));
+        return convertToDto(pilote, null); // pas de championnat ici
+    }
+
+    private PiloteDto convertToDto(Pilote pilote, Championnat ch) {
+        PiloteDto dto = new PiloteDto();
+        dto.setLibelleP(pilote.getLibelleP());
+        dto.setNbpointsTotal(pilote.getNbPointsTotal());
+        // libelleC seulement si un championnat est fourni
+        dto.setLibelleC(ch != null ? ch.getLibellec() : null);
+        return dto;
+    }
+
+    @Override
+    public List<PiloteDto> listeWinners(Integer annee) {
+        List<PiloteDto> winners = new ArrayList<>();
+
+
+        List<Championnat> championnats = championnatRepo.findByAnneeGreaterThan(annee);
+
+        for (Championnat ch : championnats) {
+
+            Optional<Pilote> gagnant = pr.findAll()
+                    .stream()
+                    .filter(p -> p.getClassementGeneral() != null
+                            && p.getClassementGeneral() == 1)
+                    .findFirst();
+
+            if (gagnant.isPresent()) {
+                PiloteDto dto = convertToDto(gagnant.get(), ch);
+                winners.add(dto);
+            }
+        }
+
+        return winners;
+    }
 
     @Override
     public Pilote ajouterPilote(Pilote pilote) {

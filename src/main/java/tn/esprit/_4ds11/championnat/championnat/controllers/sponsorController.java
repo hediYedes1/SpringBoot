@@ -12,7 +12,7 @@ import java.util.List;
 @Tag(name = "gestion des sponsors")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/sponsors")
+@RequestMapping("/api/sponsors")
 public class sponsorController {
 
     private final ISponsorService sponsorService;

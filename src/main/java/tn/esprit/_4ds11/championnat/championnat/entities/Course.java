@@ -1,6 +1,7 @@
 package tn.esprit._4ds11.championnat.championnat.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -24,7 +25,7 @@ public class Course implements Serializable {
     private List<Championnat> championnats ;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Position> positions;
 
     // Constructeurs
