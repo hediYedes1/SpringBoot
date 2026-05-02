@@ -1,7 +1,7 @@
 package tn.esprit._4ds11.championnat.championnat.services;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +17,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class sponsorService implements ISponsorService{
+public class sponsorService implements ISponsorService {
 
     private final sponsorRepository sr;
     private final contratRepository cr;
+
     @Override
     public Sponsor ajouterSponsor(Sponsor sponsor) {
         return sr.save(sponsor);
@@ -28,7 +29,6 @@ public class sponsorService implements ISponsorService{
 
     @Override
     public List<Sponsor> ajouterSponsors(List<Sponsor> sponsors) {
-
         return sr.saveAll(sponsors);
     }
 
@@ -55,7 +55,6 @@ public class sponsorService implements ISponsorService{
     @Override
     public Boolean archiverSponsor(Long idSponsor) {
         Optional<Sponsor> sponsorOpt = sr.findById(idSponsor);
-
         if (sponsorOpt.isPresent()) {
             Sponsor sponsor = sponsorOpt.get();
             sponsor.setArchived(true);
@@ -66,12 +65,10 @@ public class sponsorService implements ISponsorService{
     }
 
     @Override
-    public Sponsor addSponsorEtContratAssocie(Sponsor s)
-    {
+    public Sponsor addSponsorEtContratAssocie(Sponsor s) {
         Sponsor sponsor = sr.save(s);
         if (sponsor.getContrats() != null) {
-            sponsor.getContrats().forEach(contrat ->
-            {
+            sponsor.getContrats().forEach(contrat -> {
                 contrat.setSponsor(sponsor);
                 cr.save(contrat);
             });
@@ -105,7 +102,13 @@ public class sponsorService implements ISponsorService{
         return (totalContrats / sponsor.getBudgetAnnuel()) * 100f;
     }
 
-    @Scheduled(cron = "0 0 9 * * MON", zone = "Europe/Paris")
+    // Keyword DistinctFirstBy + IgnoreCase.
+    @Override
+    public Optional<Sponsor> recupererSponsorDistinctParNom(String nom) {
+        return sr.findSponsorDistinctParNomJPQL(nom);
+    }
+
+    @Scheduled(cron = "0 0 9 * * MON")
     @Transactional
     public void afficherPourcentageBudgetSponsorsLundi9h() {
         List<Sponsor> sponsors = sr.findAll();
@@ -115,11 +118,11 @@ public class sponsorService implements ISponsorService{
             log.info("sponsor: {} pourcentage : {}", sponsor.getNom(), pourcentage);
 
             if (pourcentage > 100f) {
-                log.info("budget depasse!! vous ne pouvez plus faire de contrats");
+                log.info("budget depasse! vous ne pouvez plus faire de contrats");
                 sponsor.setBloquerContrat(true);
                 sr.save(sponsor);
             } else if (pourcentage > 70f) {
-                log.info("attention budget presque consomme : {} % !", pourcentage);
+                log.info("attention budget presque consomme : {} %", pourcentage);
             }
         }
     }
@@ -131,4 +134,20 @@ public class sponsorService implements ISponsorService{
             return -1;
         }
     }
+
+    @Override
+    public Sponsor updateSponsor(Long idSponsor, Sponsor sponsor)
+    {
+        Sponsor sponsorExistant = sr.findById(idSponsor)
+                .orElseThrow(() -> new RuntimeException("Sponsor non trouvé avec l'id : " + idSponsor));
+
+        // Appliquer les nouvelles valeurs
+        sponsorExistant.setNom(sponsor.getNom());
+        sponsorExistant.setPays(sponsor.getPays());
+        sponsorExistant.setBudgetAnnuel(sponsor.getBudgetAnnuel());
+        sponsorExistant.setBloquerContrat(sponsor.getBloquerContrat());
+
+        return sr.save(sponsorExistant);
+    }
+
 }

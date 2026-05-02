@@ -6,6 +6,8 @@ import tn.esprit._4ds11.championnat.championnat.entities.Course;
 import tn.esprit._4ds11.championnat.championnat.repository.courseRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.positionRepository;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class courseService implements ICourseService {
@@ -28,5 +30,11 @@ public class courseService implements ICourseService {
             });
         }
         return course;
+    }
+
+    // Keyword CountBy + Between.
+    @Override
+    public long compterCoursesEntreDeuxDates(LocalDate startDate, LocalDate endDate) {
+        return cor.countCoursesBetweenDatesJPQL(startDate, endDate);
     }
 }

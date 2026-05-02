@@ -3,6 +3,7 @@ package tn.esprit._4ds11.championnat.championnat.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
 import tn.esprit._4ds11.championnat.championnat.services.ISponsorService;
@@ -64,5 +65,11 @@ public class sponsorController {
     @ResponseBody
     public Sponsor addSponsorEtContratAssocie(@RequestBody Sponsor s) {
         return sponsorService.addSponsorEtContratAssocie(s);
+    }
+
+    @PutMapping("/update/{idSponsor}")
+    public Sponsor updateSponsor(@PathVariable("idSponsor") Long idSponsor,
+                                 @RequestBody Sponsor sponsor) {
+        return sponsorService.updateSponsor(idSponsor, sponsor);
     }
 }

@@ -3,6 +3,7 @@ package tn.esprit._4ds11.championnat.championnat.services;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,20 +51,23 @@ public class piloteService implements IPiloteService{
     @Override
     public List<PiloteDto> listeWinners(Integer annee) {
         List<PiloteDto> winners = new ArrayList<>();
-
-
         List<Championnat> championnats = championnatRepo.findByAnneeGreaterThan(annee);
 
         for (Championnat ch : championnats) {
+            List<Object[]> classement = posr.findPilotesClassementByChampionnat(
+                    ch.getIdChampionnat(),
+                    PageRequest.of(0, 1)
+            );
 
-            Optional<Pilote> gagnant = pr.findAll()
-                    .stream()
-                    .filter(p -> p.getClassementGeneral() != null
-                            && p.getClassementGeneral() == 1)
-                    .findFirst();
+            if (!classement.isEmpty()) {
+                Object[] top = classement.get(0);
+                Pilote gagnant = (Pilote) top[0];
+                Integer pointsDansChampionnat = ((Number) top[1]).intValue();
 
-            if (gagnant.isPresent()) {
-                PiloteDto dto = convertToDto(gagnant.get(), ch);
+                PiloteDto dto = new PiloteDto();
+                dto.setLibelleP(gagnant.getLibelleP());
+                dto.setNbpointsTotal(pointsDansChampionnat);
+                dto.setLibelleC(ch.getLibellec());
                 winners.add(dto);
             }
         }
@@ -88,7 +92,7 @@ public class piloteService implements IPiloteService{
         return pilote;
     }
 
-    @Scheduled(cron = "0 15 11 31 12 *", zone = "Europe/Paris")
+    @Scheduled(cron = "0 15 11 31 12 *")
     @Transactional
     public void mettreAJourPointsEtClassementPilotesFinAnnee() {
         int currentYear = Year.now().getValue();

@@ -1,7 +1,7 @@
 package tn.esprit._4ds11.championnat.championnat.services;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +57,7 @@ public class equipeService implements IEquipeService {
 
     @Scheduled(fixedRate = 30000)
     @Transactional
+    @Override
     public void archiverContratsExpireesEtAffichageContratsActifsParEquipe() {
         int currentYear = Year.now().getValue();
         List<Contrat> contratsToArchive = new ArrayList<>();
@@ -72,7 +73,7 @@ public class equipeService implements IEquipeService {
 
         if (!contratsToArchive.isEmpty()) {
             cr.saveAll(contratsToArchive);
-            log.info("{} contrat(s) expiré(s) archivé(s)", contratsToArchive.size());
+            log.info("{} contrat(s) expire(s) archive(s)", contratsToArchive.size());
         }
 
         for (Contrat contrat : allContrats) {
@@ -97,16 +98,20 @@ public class equipeService implements IEquipeService {
         }
     }
 
-    public Integer nbPointsParPilotesUneEquipeChampionnatPourUneAnne(
-            Long idEquipe, Long idChampionnat, String annee) {
+    @Override
+    public Integer nbPointsParPilotesUneEquipeChampionnatPourUneAnne(Long idEquipe, Long idChampionnat, String annee) {
         int parsedAnnee = parseYear(annee);
         if (parsedAnnee == -1) {
             return 0;
         }
 
-        Integer total = po
-                .sumPointsPilotesByEquipeAndChampionnatAndAnnee(idEquipe, idChampionnat, parsedAnnee);
-
+        Integer total = po.sumPointsPilotesByEquipeAndChampionnatAndAnnee(idEquipe, idChampionnat, parsedAnnee);
         return total != null ? total : 0;
+    }
+
+    // Keyword ExistsBy + IgnoreCase.
+    @Override
+    public boolean equipeExisteParNomIgnoreCase(String libelle) {
+        return er.existsByLibelleIgnoreCaseJPQL(libelle);
     }
 }

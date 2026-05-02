@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit._4ds11.championnat.championnat.dto.ContratDto;
 import tn.esprit._4ds11.championnat.championnat.entities.Contrat;
-import tn.esprit._4ds11.championnat.championnat.services.contratService;
+import tn.esprit._4ds11.championnat.championnat.services.IContratService;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/contrat")
 public class contratController {
 
-    private final contratService cr;
+    private final IContratService cr;
     @PostMapping("/contrataffecter/{libelleEquipe}/{nomSponsor}/{pays}")
     public ContratDto ajouterContrat(
             @RequestBody Contrat contrat,

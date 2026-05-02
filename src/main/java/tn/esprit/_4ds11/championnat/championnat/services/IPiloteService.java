@@ -9,7 +9,6 @@ import java.util.List;
 public interface IPiloteService {
 
     List<PiloteDto> listeWinners(Integer annee);
-
     Pilote ajouterPilote(Pilote pilote);
     Pilote addPiloteEtPositionAssocie(Pilote p);
     void mettreAJourPointsEtClassementPilotesFinAnnee();
