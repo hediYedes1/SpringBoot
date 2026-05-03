@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit._4ds11.championnat.championnat.dto.SponsorResumeDto;
 import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
 import tn.esprit._4ds11.championnat.championnat.services.ISponsorService;
 
@@ -24,6 +25,14 @@ public class sponsorController {
         return sponsorService.ajouterSponsor(sponsor);
     }
 
+    /*
+    {
+  "nom": "Petronas",
+  "pays": "Malaysia",
+  "budgetAnnuel": 1000000,
+  "bloquerContrat": false
+}
+     */
     @Operation(description = "ajouter une liste des sponsors")
     @PostMapping("/add-sponsors")
     public List<Sponsor> ajouterSponsors(@RequestBody List<Sponsor> sponsors) {
@@ -52,6 +61,12 @@ public class sponsorController {
     @GetMapping("/display-sponsor/{sponsor-id}")
     public Sponsor recupererSponsor(@PathVariable("sponsor-id") Long idSponsor) {
         return sponsorService.recupererSponsor(idSponsor);
+    }
+
+    @Operation(description = "afficher un sponsor via DTO mappe automatiquement")
+    @GetMapping("/display-sponsor-dto/{sponsor-id}")
+    public SponsorResumeDto recupererSponsorDto(@PathVariable("sponsor-id") Long idSponsor) {
+        return sponsorService.getSponsorResumeDto(idSponsor);
     }
 
     @Operation(description = "archiver un sponsor")

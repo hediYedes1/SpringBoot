@@ -23,3 +23,12 @@ public class contratController {
                 contrat, libelleEquipe, nomSponsor, pays);
     }
 }
+/*
+Relation n--1 Contrat (n) -> Equipe (1) et Contrat (n) -> Sponsor (1)
+POST /api/contrat/contrataffecter/{libelleEquipe}/{nomSponsor}/{pays}
+Exemple: /api/contrat/contrataffecter/Mercedes/Petronas/Malaysia
+{
+  "montant": 250000,
+  "annee": "2026"
+}
+ */

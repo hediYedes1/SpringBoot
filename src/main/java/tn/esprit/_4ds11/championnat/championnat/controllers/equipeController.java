@@ -29,6 +29,13 @@ public class equipeController {
         return equipeService.ajouterEquipe(equipe);
     }
 
+    /*
+    {
+  "libelle": "Mercedes",
+  "nbPointsTotal": 0,
+  "classementGeneral": 0
+}
+     */
     @Operation(description = "ajouter une equipe avec contrats associes")
     @PostMapping("/addEquipeEtContratAssocie")
     @ResponseBody
@@ -43,6 +50,27 @@ public class equipeController {
         return equipeService.addEquipeEtPiloteAssocie(e);
     }
 
+    /*
+    2) Relation 1--n Equipe (1) -> Pilote (n)
+POST /api/equipes/addEquipeEtPiloteAssocie
+{
+  "libelle": "Ferrari",
+  "nbPointsTotal": 0,
+  "classementGeneral": 0,
+  "pilotes": [
+    {
+      "libelleP": "Leclerc",
+      "nbPointsTotal": 0,
+      "classementGeneral": 0
+    },
+    {
+      "libelleP": "Sainz",
+      "nbPointsTotal": 0,
+      "classementGeneral": 0
+    }
+  ]
+}
+     */
     @Operation(description = "historique des contrats")
     @GetMapping("/historique-contrats/{libelleEquipe}")
     public ResponseEntity<HashMap<String, Float>> historiqueContrats(

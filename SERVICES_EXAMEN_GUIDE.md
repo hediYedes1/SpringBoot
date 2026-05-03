@@ -175,3 +175,66 @@ Ce document est pense pour `CTRL+F` rapide pendant l'examen.
 4. `*--1` enfant vers parent(s) existant(s)  
    `ajoutContratEtAffecterASponsorEtEquipe`
 
+
+
+DTO automatique
+<dependency>
+<groupId>org.mapstruct</groupId>
+<artifactId>mapstruct</artifactId>
+<version>1.5.5.Final</version>
+</dependency>
+
+<!-- Processeur MapStruct (génère le code à la compilation) -->
+<dependency>
+    <groupId>org.mapstruct</groupId>
+    <artifactId>mapstruct-processor</artifactId>
+    <version>1.5.5.Final</version>
+    <scope>provided</scope>
+</dependency>
+
+Étape 2 — L'entité
+java@Entity
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class Projet {
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+private String nom;  // ← s'appelle "nom" dans l'entité
+}
+Étape 3 — Le DTO
+java@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class ProjetDTO {
+private String libelleProjet; // ← renommé "libelleProjet" dans le DTO
+}
+Étape 4 — L'interface Mapper (MapStruct fait tout tout seul !)
+java@Mapper(componentModel = "spring")
+public interface ProjetMapper {
+
+    // nom (entité) → libelleProjet (DTO)
+    @Mapping(target = "libelleProjet", source = "nom")
+    ProjetDTO toDto(Projet projet);
+
+    // MapStruct génère automatiquement l'implémentation !
+}
+Étape 5 — Le Service
+java@Service
+@AllArgsConstructor
+public class ProjetService {
+
+    private final ProjetRepository projetRepository;
+    private final ProjetMapper mapper; // injecté automatiquement
+
+    public ProjetDTO getProjet(Long id) {
+        Projet projet = projetRepository.findById(id)
+                .orElseThrow(null);
+
+        return mapper.toDto(projet); // Conversion en 1 seule ligne !
+    }
+}
+Étape 6 — Le Controller
+java@GetMapping("/{id}")
+public ProjetDTO getProjet(@PathVariable Long id) {
+return projetService.getProjet(id);
+}

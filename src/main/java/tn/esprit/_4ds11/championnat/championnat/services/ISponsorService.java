@@ -1,5 +1,6 @@
 package tn.esprit._4ds11.championnat.championnat.services;
 
+import tn.esprit._4ds11.championnat.championnat.dto.SponsorResumeDto;
 import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
 
 import java.util.List;
@@ -29,4 +30,6 @@ public interface ISponsorService {
     Optional<Sponsor> recupererSponsorDistinctParNom(String nom);
 
     Sponsor updateSponsor(Long idSponsor, Sponsor sponsor);
+
+    SponsorResumeDto getSponsorResumeDto(Long idSponsor);
 }

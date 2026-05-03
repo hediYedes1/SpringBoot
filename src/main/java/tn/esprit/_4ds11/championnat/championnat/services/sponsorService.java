@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tn.esprit._4ds11.championnat.championnat.dto.SponsorResumeDto;
 import tn.esprit._4ds11.championnat.championnat.entities.Contrat;
 import tn.esprit._4ds11.championnat.championnat.entities.Sponsor;
+import tn.esprit._4ds11.championnat.championnat.mapper.SponsorMapper;
 import tn.esprit._4ds11.championnat.championnat.repository.contratRepository;
 import tn.esprit._4ds11.championnat.championnat.repository.sponsorRepository;
 
@@ -21,6 +23,7 @@ public class sponsorService implements ISponsorService {
 
     private final sponsorRepository sr;
     private final contratRepository cr;
+    private final SponsorMapper sponsorMapper;
 
     @Override
     public Sponsor ajouterSponsor(Sponsor sponsor) {
@@ -148,6 +151,14 @@ public class sponsorService implements ISponsorService {
         sponsorExistant.setBloquerContrat(sponsor.getBloquerContrat());
 
         return sr.save(sponsorExistant);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SponsorResumeDto getSponsorResumeDto(Long idSponsor) {
+        Sponsor sponsor = sr.findById(idSponsor)
+                .orElseThrow(() -> new RuntimeException("Sponsor non trouve avec l'id : " + idSponsor));
+        return sponsorMapper.toResumeDto(sponsor);
     }
 
 }

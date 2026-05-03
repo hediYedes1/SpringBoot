@@ -22,9 +22,13 @@ public class championnatController {
     public Championnat ajouterChampionnat(@RequestBody Championnat championnat) {
         return championnatService.ajouterChampionnat(championnat);
     }
-
-
-
+    /*
+    {
+  "categorie": "FORMULA1",
+  "libellec": "F1 2026",
+  "annee": 2026
+}
+     */
 
     @Operation(description = "affecter un detail a un championnat")
     @PutMapping("/affecterDetailschampionnatToChampionnat/{idChampionnat}")
@@ -33,6 +37,12 @@ public class championnatController {
                                                               @PathVariable Long idChampionnat) {
         return championnatService.affecterDetailChampionnatToChampionnat(dt, idChampionnat);
     }
+    /*
+    {
+  "code": "REG-2026",
+  "description": "Reglement officiel 2026"
+}
+     */
 
     @Operation(description = "affecter un championnat a une course")
     @PutMapping("/affecterChampionnatToCourse/{idChampionnat}/{idCourse}")
